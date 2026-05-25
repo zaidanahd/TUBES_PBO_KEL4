@@ -33,7 +33,7 @@ java {
 }
 
 application {
-    mainClass.set("pbotubes.app.App") 
+    mainClass.set("pbotubes.App") 
 }
 
 tasks.named<Test>("test") {
