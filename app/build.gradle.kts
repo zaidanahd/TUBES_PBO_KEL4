@@ -33,11 +33,16 @@ java {
 }
 
 application {
-    // Define the main class for the application.
-    mainClass = "tubes.pbo.kelompok.App"
+    mainClass.set("pbotubes.App") 
 }
 
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+tasks.named<JavaExec>("run") {
+    standardInput = System.`in`
+    // Menghilangkan tampilan progress bar status baris baru dari Gradle
+    logging.captureStandardOutput(LogLevel.INFO) 
 }
