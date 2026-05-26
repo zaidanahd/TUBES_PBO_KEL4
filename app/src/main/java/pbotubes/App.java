@@ -37,6 +37,7 @@ public class App {
 
         scanner.close();
         System.out.println("\nProgram selesai. Terima kasih!");
+        System.out.println ("Test"); 
     }
 
     // Task 1.3: Proses login dengan max 3 attempts
@@ -82,4 +83,5 @@ public class App {
         System.out.println("       " + judul);
         System.out.println("==================================================");
     }
+
 }
