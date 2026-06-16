@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class LoginRentalKendaraan {
     public static ArrayList<Kendaraan> daftarKendaraan = new ArrayList<>();
+    public static ArrayList<Pelanggan> daftarPelanggan = new ArrayList<>();
     public static void main(String[] args) {
 
         Scanner input = new Scanner(System.in);
