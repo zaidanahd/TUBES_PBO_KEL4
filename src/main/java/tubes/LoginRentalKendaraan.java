@@ -6,10 +6,42 @@ import java.util.Scanner;
 public class LoginRentalKendaraan {
     public static ArrayList<Kendaraan> daftarKendaraan = new ArrayList<>();
     public static ArrayList<Pelanggan> daftarPelanggan = new ArrayList<>();
+    public static ArrayList<Transaksi> daftarTransaksi = new ArrayList<>(); 
     public static void main(String[] args) {
 
         Scanner input = new Scanner(System.in);
 
+        daftarTransaksi.add(
+
+        new Transaksi(
+
+        "TRX-001",
+
+        "Budi Santoso",
+
+        "B 1234 ABC",
+
+        "SELESAI",
+
+        950000
+
+        ));
+
+        daftarTransaksi.add(
+
+        new Transaksi(
+
+        "TRX-002",
+
+        "Andi Wijaya",
+
+        "D 5678 DEF",
+
+        "BERJALAN",
+
+        0
+
+        ));
         String[][] akun = {
                 {"admin", "123", "ADMIN"},
                 {"staff", "123", "STAFF"},
