@@ -2,7 +2,7 @@ package pbotubes;
 
 import java.util.Scanner;
 
-public class admin extends user {
+public class admin extends User {
 
     public admin(String username) {
         super(username);

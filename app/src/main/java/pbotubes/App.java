@@ -66,7 +66,7 @@ public class App {
 
                     login = true;
 
-                    user user = null;
+                    User user = null;
 
                     if (akun[i][2].equals("ADMIN")) {
 
@@ -82,7 +82,7 @@ public class App {
                     }
 
                     System.out.println("\nLogin berhasil!");
-                    user.menu();
+                    User.menu();
                 }
             }
 
