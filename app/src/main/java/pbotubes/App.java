@@ -66,7 +66,7 @@ public class App {
 
                     login = true;
 
-                    user user = null;
+                    User user = null;
 
                     if (akun[i][2].equals("ADMIN")) {
 

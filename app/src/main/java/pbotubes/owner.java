@@ -2,7 +2,7 @@ package pbotubes;
 
 import java.util.Scanner;
 
-public class owner extends user {
+public class owner extends User {
 
     public owner(String username) {
         super(username);

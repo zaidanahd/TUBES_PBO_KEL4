@@ -1,10 +1,10 @@
 package pbotubes;
 
-public class user {
+public class User {
 
     protected String username;
 
-    public user(String username) {
+    public User(String username) {
         this.username = username;
     }
 

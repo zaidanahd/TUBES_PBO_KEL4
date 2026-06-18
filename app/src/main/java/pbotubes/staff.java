@@ -2,7 +2,7 @@ package pbotubes;
 
 import java.util.Scanner;
 
-public class staff extends user {
+public class staff extends User {
 
     public staff(String username) {
         super(username);
