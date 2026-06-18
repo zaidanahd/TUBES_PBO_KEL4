@@ -82,7 +82,7 @@ public class App {
                     }
 
                     System.out.println("\nLogin berhasil!");
-                    user.menu();
+                    User.menu();
                 }
             }
 
