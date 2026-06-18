@@ -10,4 +10,9 @@ public class Pelanggan {
         this.nama = nama;
         this.noTelepon = noTelepon;
     }
+
+    //tambahan biar save
+    public String getKtp() { return ktp; }
+    public String getNama() { return nama; }
+    public String getNoTelepon() { return noTelepon; }
 }
