@@ -6,6 +6,7 @@ import java.time.temporal.ChronoUnit;
 //Task 4.3 - class service untuk proses peminjaman dan pengembalian
 public class PeminjamanService {
     private BiayaPengembalian kalkulasiBiaya;
+    private static final double BIAYA_ASURANSI = 100000;
 
     public PeminjamanService() {
         
@@ -18,7 +19,7 @@ public class PeminjamanService {
     }
 
     // Task 4.3: Logika peminjaman lengkap
-    public Transaksi prosesPeminjaman(String ktp, String platNomor, int lamaSewa) {
+    public Transaksi prosesPeminjaman(String ktp, String platNomor, int lamaSewa, boolean asuransi) {
         // 1. Validasi KTP terdaftar
         Pelanggan pelanggan = cariPelanggan(ktp);
         if (pelanggan == null) {
@@ -38,6 +39,10 @@ public class PeminjamanService {
         // 3. Hitung estimasi biaya awal
         double estimasiBiaya = kendaraan.hargaSewa * lamaSewa;
 
+        if(asuransi){
+        estimasiBiaya += BIAYA_ASURANSI;
+        }
+
         // 4. Ubah status kendaraan
         kendaraan.status = "SEDANG DISEWA";
 
@@ -50,7 +55,8 @@ public class PeminjamanService {
                 pelanggan.nama,
                 platNomor,
                 "BERJALAN",
-                estimasiBiaya);
+                estimasiBiaya,
+                asuransi);
 
         App.daftarTransaksi.add(transaksi);
 
@@ -78,5 +84,18 @@ public class PeminjamanService {
     // Delegate ke interface untuk kalkulasi biaya pengembalian
     public double hitungBiayaPengembalian(Transaksi transaksi, int hariTerlambat, double dendaPerHari) {
         return kalkulasiBiaya.hitungBiayaPengembalian(transaksi, hariTerlambat, dendaPerHari);
+    }
+
+    public double prosesPengembalian(Transaksi transaksi, TingkatKerusakan kerusakan) {
+
+    DamageService damageService = new DamageService();
+
+    double dendaKerusakan = damageService.hitungDendaKerusakan(kerusakan, transaksi.menggunakanAsuransi);
+
+    transaksi.status = "SELESAI";
+
+    transaksi.totalTagihan += dendaKerusakan;
+
+    return transaksi.totalTagihan;
     }
 }

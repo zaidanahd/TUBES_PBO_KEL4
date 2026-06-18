@@ -12,12 +12,15 @@ public class Transaksi {
 
     double totalTagihan;
 
+    boolean menggunakanAsuransi;
+
     public Transaksi(
             String idTransaksi,
             String namaPelanggan,
             String platNomor,
             String status,
-            double totalTagihan){
+            double totalTagihan,
+            boolean menggunakanAsuransi){
 
         this.idTransaksi=idTransaksi;
 
@@ -28,6 +31,8 @@ public class Transaksi {
         this.status=status;
 
         this.totalTagihan=totalTagihan;
+
+        this.menggunakanAsuransi=menggunakanAsuransi;
 
     }
 

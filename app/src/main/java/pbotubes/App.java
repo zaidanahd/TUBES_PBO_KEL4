@@ -12,40 +12,30 @@ public class App {
         Scanner input = new Scanner(System.in);
 
         daftarTransaksi.add(
-
         new Transaksi(
-
         "TRX-001",
-
         "Budi Santoso",
-
         "B 1234 ABC",
-
         "SELESAI",
-
-        950000
-
-        ));
+        950000,
+        false
+    )
+);
 
         daftarTransaksi.add(
-
         new Transaksi(
-
         "TRX-002",
-
         "Andi Wijaya",
-
         "D 5678 DEF",
-
         "BERJALAN",
-
-        0
-
-        ));
+        0,
+        true
+        )
+    );
         String[][] akun = {
-                {"admin", "123", "ADMIN"},
-                {"staff", "123", "STAFF"},
-                {"owner", "123", "OWNER"}
+                {"admin", "admin123", "ADMIN"},
+                {"staff", "staff123", "STAFF"},
+                {"owner", "owner123", "OWNER"}
         };
 
         int percobaan = 0;
@@ -82,7 +72,7 @@ public class App {
                     }
 
                     System.out.println("\nLogin berhasil!");
-                    User.menu();
+                    user.menu();
                 }
             }
 

@@ -40,7 +40,7 @@ public class staff extends User {
                     menuProsesSewa(input); // Task 4.3
                     break;
                 case 4:
-                    System.out.println("[INFO] Fitur Pengembalian belum diimplementasikan.");
+                    menuPengembalian(input);
                     break;
                 case 5:
                     menuLihatKendaraanTersedia(input); // Task 4.1
@@ -130,7 +130,11 @@ public class staff extends User {
         }
 
         try {
-            Transaksi transaksi = peminjamanService.prosesPeminjaman(ktp, plat, lamaSewa);
+            System.out.print("Tambah asuransi? (y/n): ");
+            String jawab = input.nextLine();
+            boolean asuransi = jawab.equalsIgnoreCase("y");
+            
+            Transaksi transaksi = peminjamanService.prosesPeminjaman(ktp, plat, lamaSewa, asuransi);
             System.out.println("\n[SUKSES] Transaksi berhasil dibuat!");
             System.out.println("ID Transaksi : " + transaksi.idTransaksi);
             System.out.println("Pelanggan    : " + transaksi.namaPelanggan);
@@ -212,4 +216,59 @@ public class staff extends User {
             System.out.println("\nData pelanggan tidak ditemukan.");
         }
     }
+
+    private void menuPengembalian(Scanner input) {
+    System.out.println("========================================");
+    System.out.println("         MENU PENGEMBALIAN");
+    System.out.println("========================================");
+
+    System.out.print("Masukkan ID Transaksi: ");
+    String idTransaksi = input.nextLine();
+
+    // cari transaksi
+    Transaksi transaksi = null;
+
+    for (Transaksi t : App.daftarTransaksi) {
+        if (t.idTransaksi.equals(idTransaksi)) {
+            transaksi = t;
+            break;
+        }
+    }
+
+    if (transaksi == null) {
+        System.out.println("Transaksi tidak ditemukan!");
+        return;
+    }
+
+    System.out.println("\nPilih Tingkat Kerusakan");
+    System.out.println("1. RINGAN");
+    System.out.println("2. SEDANG");
+    System.out.println("3. BERAT");
+    System.out.print("Pilihan: ");
+
+    int pilihan = Integer.parseInt(input.nextLine());
+
+    TingkatKerusakan kerusakan;
+
+    switch (pilihan) {
+        case 1:
+            kerusakan = TingkatKerusakan.RINGAN;
+            break;
+        case 2:
+            kerusakan = TingkatKerusakan.SEDANG;
+            break;
+        case 3:
+            kerusakan = TingkatKerusakan.BERAT;
+            break;
+        default:
+            System.out.println("Pilihan tidak valid!");
+            return;
+    }
+
+    double total = peminjamanService.prosesPengembalian(transaksi, kerusakan);
+
+    System.out.println("\nPengembalian berhasil!");
+    System.out.println("Total Tagihan : Rp " +
+            String.format("%,.0f", total).replace(",", "."));
+}
 }
