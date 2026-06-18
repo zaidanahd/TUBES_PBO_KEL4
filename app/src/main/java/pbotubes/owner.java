@@ -1,4 +1,4 @@
-package tubes;
+package pbotubes;
 
 import java.util.Scanner;
 
@@ -88,7 +88,7 @@ public class owner extends user {
     //total 
     double totalPendapatan=0;
 
-    for (Transaksi t : LoginRentalKendaraan.daftarTransaksi) {
+    for (Transaksi t : App.daftarTransaksi) {
 
         String txtTagihan;
 

@@ -1,4 +1,4 @@
-package tubes;
+package pbotubes;
 
 import java.util.Scanner;
 
@@ -62,7 +62,7 @@ public class staff extends user {
             return;
         }
 
-        for (Pelanggan p : LoginRentalKendaraan.daftarPelanggan) {
+        for (Pelanggan p : App.daftarPelanggan) {
             if (p.ktp.equals(ktp)) {
                 System.out.println("Pelanggan dengan KTP tersebut sudah terdaftar.");
                 return;
@@ -76,7 +76,7 @@ public class staff extends user {
         String noTelp = input.nextLine();
 
         Pelanggan pelangganBaru = new Pelanggan(ktp, nama, noTelp);
-        LoginRentalKendaraan.daftarPelanggan.add(pelangganBaru);
+        App.daftarPelanggan.add(pelangganBaru);
 
         System.out.println("\n[SUKSES] Pelanggan " + nama + " (KTP: " + ktp + ") berhasil didaftarkan.");
     }
@@ -93,7 +93,7 @@ public class staff extends user {
         if (ktpCari.equals("0")) return;
 
         Pelanggan ditemukan = null;
-        for (Pelanggan p : LoginRentalKendaraan.daftarPelanggan) {
+        for (Pelanggan p : App.daftarPelanggan) {
             if (p.ktp.equals(ktpCari)) {
                 ditemukan = p;
                 break;

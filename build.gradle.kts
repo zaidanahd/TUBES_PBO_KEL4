@@ -15,7 +15,7 @@ repositories {
 }
 
 application {
-    mainClass.set("tubes.LoginRentalKendaraan")
+   mainClass.set("pbotubes.App")
 }
 
 java {

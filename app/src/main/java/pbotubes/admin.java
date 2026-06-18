@@ -1,4 +1,4 @@
-package tubes;
+package pbotubes;
 
 import java.util.Scanner;
 
@@ -69,7 +69,7 @@ public class admin extends user {
         String platNomor = input.nextLine().toUpperCase();
 
         // Cek keunikan plat nomor dari arraylist global di LoginRentalKendaraan
-        for (Kendaraan k : LoginRentalKendaraan.daftarKendaraan) {
+        for (Kendaraan k : App.daftarKendaraan) {
             if (k.platNomor.equalsIgnoreCase(platNomor)) {
                 System.out.println("[ERROR] Plat Nomor sudah terdaftar sebelumnya (harus unik).");
                 return;
@@ -95,7 +95,7 @@ public class admin extends user {
         }
 
         Kendaraan kendaraanBaru = new Kendaraan(platNomor, jenis, hargaSewa, merk, infoTambahan);
-        LoginRentalKendaraan.daftarKendaraan.add(kendaraanBaru);
+        App.daftarKendaraan.add(kendaraanBaru);
 
         System.out.println("\n[SUKSES] " + jenis + " dengan plat " + platNomor 
                 + " berhasil ditambahkan ke dalam sistem dengan status TERSEDIA.");
@@ -109,7 +109,7 @@ public class admin extends user {
         System.out.println("                        DAFTAR SELURUH KENDARAAN                         ");
         System.out.println("=========================================================================");
 
-        if (LoginRentalKendaraan.daftarKendaraan.isEmpty()) {
+        if (App.daftarKendaraan.isEmpty()) {
             System.out.println("Data kendaraan masih kosong.");
             System.out.print("Tekan ENTER untuk kembali ke menu utama...");
             input.nextLine();
@@ -120,7 +120,7 @@ public class admin extends user {
                 "Plat No", "Jenis", "Harga/Hari", "Merk", "Info Tambahan", "Status");
         System.out.println("-------------------------------------------------------------------------");
 
-        for (Kendaraan k : LoginRentalKendaraan.daftarKendaraan) {
+        for (Kendaraan k : App.daftarKendaraan) {
             System.out.printf("| %-10s | %-5s | Rp %-8.0f | %-10s | %-15s | %-10s |%n", 
                     k.platNomor, k.jenis, k.hargaSewa, k.merk, k.infoTambahan, k.status);
         }
@@ -142,8 +142,8 @@ public class admin extends user {
             if (plat.equals("0")) break;
 
             int indexDitemukan = -1;
-            for (int i = 0; i < LoginRentalKendaraan.daftarKendaraan.size(); i++) {
-                if (LoginRentalKendaraan.daftarKendaraan.get(i).platNomor.equalsIgnoreCase(plat)) {
+            for (int i = 0; i < App.daftarKendaraan.size(); i++) {
+                if (App.daftarKendaraan.get(i).platNomor.equalsIgnoreCase(plat)) {
                     indexDitemukan = i;
                     break;
                 }
@@ -153,14 +153,14 @@ public class admin extends user {
                 System.out.println("[GAGAL] Kendaraan dengan Plat Nomor " + plat + " tidak ditemukan.\n");
                 // Loop berlanjut untuk meminta input kembali sesuai UI
             } else {
-                Kendaraan k = LoginRentalKendaraan.daftarKendaraan.get(indexDitemukan);
+                Kendaraan k = App.daftarKendaraan.get(indexDitemukan);
                 
                 // Pengecekan jika status sedang disewa (Case-insensitive)
                 if (k.status.equalsIgnoreCase("SEDANG DISEWA")) {
                     System.out.println("[GAGAL] Kendaraan masih berstatus SEDANG DISEWA, data tidak dapat dihapus!\n");
                     // Loop berlanjut untuk meminta input kembali sesuai instruksi screenshot 3
                 } else {
-                    LoginRentalKendaraan.daftarKendaraan.remove(indexDitemukan);
+                    App.daftarKendaraan.remove(indexDitemukan);
                     System.out.println("[SUKSES] Kendaraan " + plat + " berhasil dihapus dari sistem.");
                     System.out.print("Tekan ENTER untuk kembali ke menu utama...");
                     input.nextLine();

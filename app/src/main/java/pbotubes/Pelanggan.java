@@ -1,4 +1,4 @@
-package tubes;
+package pbotubes;
 
 public class Pelanggan {
     protected String ktp;
