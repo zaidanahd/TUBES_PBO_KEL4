@@ -92,7 +92,6 @@ public class staff extends User {
         Pelanggan pelangganBaru = new Pelanggan(ktp, nama, noTelp);
         LoginRentalKendaraan.daftarPelanggan.add(pelangganBaru);
 
-        // ← PAKAI DatabaseService
         DatabaseService.savePelanggan(pelangganBaru);
 
         System.out.println("\n[SUKSES] Pelanggan " + nama + " (KTP: " + ktp + ") berhasil didaftarkan.");
@@ -200,17 +199,22 @@ public class staff extends User {
             return;
         }
 
+        // [MODUL 4] Tanya apakah pakai asuransi
+        System.out.print("Gunakan Asuransi? (y/n): ");
+        boolean pakaiAsuransi = input.nextLine().trim().equalsIgnoreCase("y");
+
         try {
-            Transaksi transaksi = peminjamanService.prosesPeminjaman(ktp, plat, lamaSewa);
+            Transaksi transaksi = peminjamanService.prosesPeminjaman(ktp, plat, lamaSewa, pakaiAsuransi);
             System.out.println("\n[SUKSES] Transaksi berhasil dibuat!");
             System.out.println("ID Transaksi : " + transaksi.idTransaksi);
             System.out.println("Pelanggan    : " + transaksi.namaPelanggan);
             System.out.println("Kendaraan    : " + transaksi.platNomor);
-            System.out
-                    .println("Estimasi Biaya: Rp " + String.format("%,.0f", transaksi.totalTagihan).replace(",", "."));
+            System.out.println("Estimasi Biaya: Rp " + String.format("%,.0f", transaksi.totalTagihan).replace(",", "."));
             System.out.println("Status       : " + transaksi.status);
+            if (pakaiAsuransi) {
+                System.out.println("Asuransi     : AKTIF (denda kerusakan digratiskan)");
+            }
 
-            // ← PAKAI DatabaseService
             DatabaseService.saveTransaksi(LoginRentalKendaraan.daftarTransaksi);
 
             Kendaraan kendaraanUpdated = cariKendaraan(plat);
@@ -264,6 +268,7 @@ public class staff extends User {
 
         System.out.println("Kendaraan ditemukan " + kendaraan.jenis + " (" + kendaraan.platNomor + ").");
 
+        // [1] Input hari terlambat
         System.out.print("Durasi Keterlambatan (Hari, isi 0 jika tepat waktu): ");
         int hariTerlambat;
         try {
@@ -277,22 +282,70 @@ public class staff extends User {
             return;
         }
 
+        // [2] Hitung denda terlambat
         double dendaPerHari = kendaraan.jenis.equalsIgnoreCase("Mobil") ? 50000 : 20000;
         double biayaDasar = transaksi.totalTagihan;
-        double denda = hariTerlambat * dendaPerHari;
-        double totalAkhir = biayaDasar + denda;
+        double dendaTerlambat = hariTerlambat * dendaPerHari;
+
+        // ============================================
+        // [3] MODUL 4 - INPUT KONDISI KENDARAAN (KERUSAKAN)
+        // ============================================
+        System.out.println("\n--- KONDISI KENDARAAN ---");
+        System.out.println("0. Tidak Ada Kerusakan");
+        System.out.println("1. Kerusakan RINGAN   (Rp 200.000)");
+        System.out.println("2. Kerusakan SEDANG   (Rp 500.000)");
+        System.out.println("3. Kerusakan BERAT    (Rp 1.000.000)");
+        System.out.print("Pilih tingkat kerusakan: ");
+
+        int pilihanKerusakan;
+        try {
+            pilihanKerusakan = Integer.parseInt(input.nextLine().trim());
+            if (pilihanKerusakan < 0 || pilihanKerusakan > 3) {
+                System.out.println("[ERROR] Pilihan tidak valid!");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("[ERROR] Harus berupa angka!");
+            return;
+        }
+
+        // Hitung denda kerusakan menggunakan DamageService
+        DamageService damageService = new DamageService();
+        TingkatKerusakan tingkatKerusakan = null;
+
+        switch (pilihanKerusakan) {
+            case 1 -> tingkatKerusakan = TingkatKerusakan.RINGAN;
+            case 2 -> tingkatKerusakan = TingkatKerusakan.SEDANG;
+            case 3 -> tingkatKerusakan = TingkatKerusakan.BERAT;
+        }
+
+        double dendaKerusakan = 0;
+        if (tingkatKerusakan != null) {
+            dendaKerusakan = damageService.hitungDendaKerusakan(
+                tingkatKerusakan,
+                transaksi.isMenggunakanAsuransi()
+            );
+
+            if (dendaKerusakan == 0 && transaksi.isMenggunakanAsuransi()) {
+                System.out.println("[INFO] Denda kerusakan digratiskan karena asuransi!");
+            }
+        }
+
+        // [4] Hitung total akhir (UPDATE: tambah dendaKerusakan)
+        double totalAkhir = biayaDasar + dendaTerlambat + dendaKerusakan;
 
         transaksi.setStatus("SELESAI");
         transaksi.setHariTerlambat(hariTerlambat);
-        transaksi.setDenda(denda);
+        transaksi.setDenda(dendaTerlambat);
         transaksi.setTotalTagihan(totalAkhir);
 
         kendaraan.setStatus("TERSEDIA");
 
-        // ← PAKAI DatabaseService
+        // Save ke database
         DatabaseService.saveTransaksi(LoginRentalKendaraan.daftarTransaksi);
         DatabaseService.saveKendaraan(kendaraan);
 
+        // Tampilkan struk tagihan akhir
         System.out.println("\nMenghitung tagihan...");
         System.out.println("\n--- STRUK TAGIHAN AKHIR ---");
         System.out.println("ID Transaksi   : " + transaksi.idTransaksi);
@@ -300,11 +353,23 @@ public class staff extends User {
         System.out.println("Kendaraan      : " + kendaraan.jenis + " (" + transaksi.platNomor + ")");
         System.out.println("Biaya Dasar    : Rp " + String.format("%,.0f", biayaDasar).replace(",", ".")
                 + " (" + transaksi.getDurasiSewa() + " Hari)");
-        if (denda > 0) {
-            System.out.println("Denda Telat    : Rp " + String.format("%,.0f", denda).replace(",", ".")
+        
+        if (dendaTerlambat > 0) {
+            System.out.println("Denda Telat    : Rp " + String.format("%,.0f", dendaTerlambat).replace(",", ".")
                     + " (" + hariTerlambat + " Hari x Rp " + String.format("%,.0f", dendaPerHari).replace(",", ".")
                     + " khusus " + kendaraan.jenis + ")");
         }
+        
+        // [MODUL 4] Tampilkan denda kerusakan di struk
+        if (tingkatKerusakan != null) {
+            if (dendaKerusakan > 0) {
+                System.out.println("Denda Kerusakan: Rp " + String.format("%,.0f", dendaKerusakan).replace(",", ".")
+                        + " (" + tingkatKerusakan + ")");
+            } else if (transaksi.isMenggunakanAsuransi()) {
+                System.out.println("Denda Kerusakan: Rp 0 (Asuransi aktif - " + tingkatKerusakan + " digratiskan)");
+            }
+        }
+        
         System.out.println("---------------------------------- +");
         System.out.println("TOTAL BAYAR    : Rp " + String.format("%,.0f", totalAkhir).replace(",", "."));
         System.out.println("----------------------------------");
