@@ -16,4 +16,33 @@ public class Kendaraan {
         this.infoTambahan = infoTambahan;
         this.status       = "TERSEDIA"; // Disesuaikan kapitalisasinya dengan UI screenshot
     }
+
+    // Getter & Setter biar save
+    public String getPlatNomor() {
+        return platNomor;
+    }
+
+    public String getJenis() {
+        return jenis;
+    }
+
+    public double getHargaSewa() {
+        return hargaSewa;
+    }
+
+    public String getMerk() {
+        return merk;
+    }
+
+    public String getInfoTambahan() {
+        return infoTambahan;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

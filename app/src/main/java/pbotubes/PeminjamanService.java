@@ -1,25 +1,15 @@
 package pbotubes;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-
-//Task 4.3 - class service untuk proses peminjaman dan pengembalian
+// Task 4.3 - class service untuk proses peminjaman dan pengembalian
 public class PeminjamanService {
-    private BiayaPengembalian kalkulasiBiaya;
-    private static final double BIAYA_ASURANSI = 100000;
 
-    public PeminjamanService() {
-        
-        this.kalkulasiBiaya = new DefaultBiayaPengembalian();
+    // Overload: tanpa asuransi (backward compatible)
+    public Transaksi prosesPeminjaman(String ktp, String platNomor, int lamaSewa) {
+        return prosesPeminjaman(ktp, platNomor, lamaSewa, false);
     }
 
-    // Setter untuk inject implementasi kustom (DIP)
-    public void setKalkulasiBiaya(BiayaPengembalian kalkulasiBiaya) {
-        this.kalkulasiBiaya = kalkulasiBiaya;
-    }
-
-    // Task 4.3: Logika peminjaman lengkap
-    public Transaksi prosesPeminjaman(String ktp, String platNomor, int lamaSewa, boolean asuransi) {
+    // Method utama dengan asuransi (MODUL 4)
+    public Transaksi prosesPeminjaman(String ktp, String platNomor, int lamaSewa, boolean menggunakanAsuransi) {
         // 1. Validasi KTP terdaftar
         Pelanggan pelanggan = cariPelanggan(ktp);
         if (pelanggan == null) {
@@ -39,32 +29,29 @@ public class PeminjamanService {
         // 3. Hitung estimasi biaya awal
         double estimasiBiaya = kendaraan.hargaSewa * lamaSewa;
 
-        if(asuransi){
-        estimasiBiaya += BIAYA_ASURANSI;
-        }
-
         // 4. Ubah status kendaraan
         kendaraan.status = "SEDANG DISEWA";
 
         // 5. Generate ID Transaksi (Task 4.2)
         String idTransaksi = IdGenerator.generateTransaksiId();
 
-        // 6. Buat transaksi baru
+        // 6. Buat transaksi baru (dengan asuransi)
         Transaksi transaksi = new Transaksi(
                 idTransaksi,
                 pelanggan.nama,
                 platNomor,
                 "BERJALAN",
                 estimasiBiaya,
-                asuransi);
+                lamaSewa,
+                menggunakanAsuransi); // ← MODUL 4
 
-        App.daftarTransaksi.add(transaksi);
+        LoginRentalKendaraan.daftarTransaksi.add(transaksi);
 
         return transaksi;
     }
 
     private Pelanggan cariPelanggan(String ktp) {
-        for (Pelanggan p : App.daftarPelanggan) {
+        for (Pelanggan p : LoginRentalKendaraan.daftarPelanggan) {
             if (p.ktp.equals(ktp)) {
                 return p;
             }
@@ -73,29 +60,11 @@ public class PeminjamanService {
     }
 
     private Kendaraan cariKendaraan(String platNomor) {
-        for (Kendaraan k : App.daftarKendaraan) {
+        for (Kendaraan k : LoginRentalKendaraan.daftarKendaraan) {
             if (k.platNomor.equalsIgnoreCase(platNomor)) {
                 return k;
             }
         }
         return null;
-    }
-
-    // Delegate ke interface untuk kalkulasi biaya pengembalian
-    public double hitungBiayaPengembalian(Transaksi transaksi, int hariTerlambat, double dendaPerHari) {
-        return kalkulasiBiaya.hitungBiayaPengembalian(transaksi, hariTerlambat, dendaPerHari);
-    }
-
-    public double prosesPengembalian(Transaksi transaksi, TingkatKerusakan kerusakan) {
-
-    DamageService damageService = new DamageService();
-
-    double dendaKerusakan = damageService.hitungDendaKerusakan(kerusakan, transaksi.menggunakanAsuransi);
-
-    transaksi.status = "SELESAI";
-
-    transaksi.totalTagihan += dendaKerusakan;
-
-    return transaksi.totalTagihan;
     }
 }
