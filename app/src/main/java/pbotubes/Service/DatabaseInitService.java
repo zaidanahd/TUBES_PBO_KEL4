@@ -2,6 +2,9 @@ package pbotubes.Service;
 import pbotubes.Config.DatabaseConnection;
 import java.sql.*;
 
+// EPIC 1 - Task 1 (Silvi) :Dipanggil di awal main() sebelum proses login, memastikan tabel
+// & akun default (admin123/staff123/owner123) tersedia.
+
 public class DatabaseInitService {
 
     public void initialize() {
@@ -19,7 +22,7 @@ public class DatabaseInitService {
             System.err.println("[ERROR] Gagal inisialisasi database: " + e.getMessage());
         }
     }
-
+     // Tabel users : mendukung Epic 1 (Login & Role) - Silvi
     private void createTables(Statement stmt) throws SQLException {
         stmt.execute("""
                     CREATE TABLE IF NOT EXISTS users (
@@ -30,6 +33,7 @@ public class DatabaseInitService {
                     )
                 """);
 
+        // EPIC 2 (Intan) :  Tabel kendaraan, struktur data untuk Manajemen Inventaris Kendaraan.
         stmt.execute("""
                     CREATE TABLE IF NOT EXISTS kendaraan (
                         plat_nomor VARCHAR(20) PRIMARY KEY,
@@ -41,6 +45,7 @@ public class DatabaseInitService {
                     )
                 """);
 
+        // EPIC 3 (Zaidan): Tabel pelanggan , struktur data untuk Manajemen Pelanggan
         stmt.execute("""
                     CREATE TABLE IF NOT EXISTS pelanggan (
                         ktp VARCHAR(20) PRIMARY KEY,
@@ -49,7 +54,7 @@ public class DatabaseInitService {
                     )
                 """);
 
-        // ← MODUL 4: Tambah kolom menggunakan_asuransi
+        // EPIC 4 (Alwi) + MODUL TAMBAHAN - Kelompok 4 : untuk kolom menggunakan_asuransi
         stmt.execute("""
                     CREATE TABLE IF NOT EXISTS transaksi (
                         id_transaksi VARCHAR(20) PRIMARY KEY,
@@ -68,6 +73,8 @@ public class DatabaseInitService {
                 """);
     }
 
+
+    // EPIC 1 - Task 1 (Silvi) : User Story 1 Epic 1, "Sistem menyediakan akun untuk masing-masing role."
     private void seedDefaultUsers(Statement stmt) throws SQLException {
         ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM users");
         rs.next();

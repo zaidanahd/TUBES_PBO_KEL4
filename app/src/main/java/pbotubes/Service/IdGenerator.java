@@ -1,6 +1,6 @@
 package pbotubes.Service;
 
-//Task 4.2 - class untuk generate ID transaksi
+//EPIC 4 - Task 2 (Alwi): class untuk generate ID transaksi
 public class IdGenerator {
     private static int counter = 1;
 

@@ -2,6 +2,10 @@ package pbotubes.Model;
 
 import java.sql.Timestamp;
 
+//Entity Transaksi: mencatat peminjaman & pengembalian kendaraan.
+//Inti dari Epic 4 (Alwi - Transaksi Peminjaman & Pengembalian)
+//dan dibaca ulang di Epic 5 (Haruka - Laporan Owner).
+
 public class Transaksi {
     String idTransaksi;
     String namaPelanggan;
@@ -11,17 +15,19 @@ public class Transaksi {
     int durasiSewa;
     int hariTerlambat;
     double denda;
-    boolean menggunakanAsuransi;
+    boolean menggunakanAsuransi; // dipakai untuk case tambahan Kelompok 4 - Asuransi & Kerusakan
     Timestamp tanggalPinjam; // ← TAMBAH
     Timestamp tanggalKembali; // ← TAMBAH
 
+    // EPIC 4 - Task 2 (Alwi)
     // Constructor tanpa asuransi (backward compatible)
     public Transaksi(String idTransaksi, String namaPelanggan, String platNomor,
             String status, double totalTagihan, int durasiSewa) {
         this(idTransaksi, namaPelanggan, platNomor, status, totalTagihan, durasiSewa, false);
     }
 
-    // Constructor dengan asuransi
+    // EPIC 4 - Task 2 (Alwi)
+    // Constructor dengan asuransi (mendukung modul tambahan Asuransi/Kerusakan)
     public Transaksi(String idTransaksi, String namaPelanggan, String platNomor,
             String status, double totalTagihan, int durasiSewa, boolean menggunakanAsuransi) {
         this.idTransaksi = idTransaksi;

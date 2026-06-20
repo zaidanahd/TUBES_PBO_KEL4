@@ -1,6 +1,7 @@
 package pbotubes.Service;
 import pbotubes.Model.Transaksi;
-//task 4.4 - interface kalkulasi biaya pengembalian
+
+// EPIC 4 - Task 4 (Alwi) : Interface kalkulasi biaya pengembalian (penerapan Abstraction/Interface. 
 public interface BiayaPengembalian {
     double hitungBiayaPengembalian(Transaksi transaksi, int hariTerlambat, double dendaPerHari);
 }

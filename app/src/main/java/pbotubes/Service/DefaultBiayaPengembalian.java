@@ -2,7 +2,7 @@ package pbotubes.Service; // ← lowercase!
 
 import pbotubes.Model.Transaksi; // ← import spesifik
 
-// Task 4.4 - implementasi default kalkulasi biaya pengembalian
+// EPIC 4 - Task 4.4 (Alwi) : implementasi default kalkulasi biaya pengembalian
 public class DefaultBiayaPengembalian implements BiayaPengembalian {
 
     @Override

@@ -5,11 +5,16 @@ import pbotubes.Service.*;
 
 import java.util.Scanner;
 
+//Dashboard & menu untuk role ADMIN
+//EPIC 2 (Intan) : Mencakup seluruh User Story Epic 2,  Manajemen Inventaris Kendaraan
 public class admin extends User {
 
     public admin(String username) {
         super(username);
     }
+
+    // EPIC 1 - Task 2 (Silvi) : Override menu() agar Admin hanya melihat menu Manajemen Kendaraan (Epic 2),
+    // sesuai acceptance criteria pembatasan akses per role.
 
     @Override
     public void menu() {
@@ -51,6 +56,7 @@ public class admin extends User {
         } while (pilihan != 0);
     }
 
+    // EPIC 2 - Task 1 (Intan) : User Story 1,  Admin menambahkan data kendaraan baru (Mobil/Motor).
     private void menuTambahKendaraan(Scanner input) {
         System.out.println("========================================");
         System.out.println("       MENU TAMBAH KENDARAAN BARU");
@@ -81,7 +87,7 @@ public class admin extends User {
         System.out.print("Masukkan Plat Nomor      : ");
         String platNomor = input.nextLine().toUpperCase();
 
-        // Cek duplikat
+        // Cek duplikat plat nomor 
         for (Kendaraan k : LoginRentalKendaraan.daftarKendaraan) {
             if (k.getPlatNomor().equalsIgnoreCase(platNomor)) {
                 System.out.println("[ERROR] Plat Nomor sudah terdaftar sebelumnya (harus unik).");
@@ -122,6 +128,7 @@ public class admin extends User {
         input.nextLine();
     }
 
+    // EPIC 2 - Task 2 (Intan) : User Story 2, Admin melihat seluruh daftar kendaraan beserta status terkini.
     private void menuLihatKendaraan(Scanner input) {
         System.out.println("=========================================================================");
         System.out.println("                        DAFTAR SELURUH KENDARAAN                         ");
@@ -147,6 +154,7 @@ public class admin extends User {
         input.nextLine();
     }
 
+    // EPIC 2 - Task 3 (Intan) : User Story 3, Admin menghapus data kendaraan.
     private void menuHapusKendaraan(Scanner input) {
         while (true) {
             System.out.println("========================================");

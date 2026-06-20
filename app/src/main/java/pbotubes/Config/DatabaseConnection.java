@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+//Koneksi ke database MySQL (Laragon) untuk persistensi data.
+//Mendukung seluruh Epic karena dipakai oleh DatabaseService untuk load/save Kendaraan, Pelanggan, dan Transaksi.
+
 public class DatabaseConnection {
     private static final String URL = "jdbc:mysql://localhost:3306/DB_TUBES_PBO";
     private static final String USER = "root";

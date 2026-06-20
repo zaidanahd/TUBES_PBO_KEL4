@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class DatabaseService {
 
     // ========== KENDARAAN ==========
+    // EPIC 2 (Intan) : Load seluruh data kendaraan dari DB ke ArrayList saat aplikasi start.
 
     public static ArrayList<Kendaraan> loadKendaraan() {
         ArrayList<Kendaraan> list = new ArrayList<>();
@@ -36,6 +37,9 @@ public class DatabaseService {
         return list;
     }
 
+
+    // EPIC 2 - Task 1 (Intan) : Dipanggil dari admin.menuTambahKendaraan() untuk menyimpan kendaraan baru,
+    // dan dari staff (proses sewa/pengembalian) untuk update status kendaraan.
     public static void saveKendaraan(Kendaraan k) {
         String sql = "INSERT INTO kendaraan (plat_nomor, jenis, harga_sewa, merk, info_tambahan, status) VALUES (?, ?, ?, ?, ?, ?) "
                 +
@@ -63,6 +67,8 @@ public class DatabaseService {
         }
     }
 
+    // EPIC 2 - Task 3 (Intan) : Dipanggil dari admin.menuHapusKendaraan().
+
     public static void deleteKendaraan(String platNomor) {
         String sql = "DELETE FROM kendaraan WHERE plat_nomor=?";
 
@@ -79,7 +85,7 @@ public class DatabaseService {
     }
 
     // ========== PELANGGAN ==========
-
+    // ==EPIC 3 (Zaidan) : Load seluruh data pelanggan dari DB ke ArrayList saat aplikasi start.
     public static ArrayList<Pelanggan> loadPelanggan() {
         ArrayList<Pelanggan> list = new ArrayList<>();
         String sql = "SELECT * FROM pelanggan";
@@ -102,6 +108,7 @@ public class DatabaseService {
         return list;
     }
 
+    // EPIC 3 - Task 1 (Zaidan) : Dipanggil dari staff.menuDaftarPelanggan() untuk menyimpan pelanggan baru.
     public static void savePelanggan(Pelanggan p) {
         String sql = "INSERT INTO pelanggan (ktp, nama, no_telepon) VALUES (?, ?, ?) " +
                 "ON DUPLICATE KEY UPDATE nama=?, no_telepon=?";
@@ -124,6 +131,7 @@ public class DatabaseService {
     }
 
     // ========== TRANSAKSI ==========
+    // EPIC 4 (Alwi) : Load seluruh data transaksi dari DB ke ArrayList saat aplikasi start.
 
     public static ArrayList<Transaksi> loadTransaksi() {
         ArrayList<Transaksi> list = new ArrayList<>();
@@ -156,6 +164,7 @@ public class DatabaseService {
         return list;
     }
 
+     // EPIC 4 - Task 2 & 3 (Alwi) : Dipanggil saat proses sewa (status BERJALAN) dan saat pengembalian.
     public static void saveTransaksi(ArrayList<Transaksi> daftarTransaksi) {
         String sql = "INSERT INTO transaksi (id_transaksi, nama_pelanggan, plat_nomor, status, total_tagihan, durasi_sewa, hari_terlambat, denda, menggunakan_asuransi, tanggal_pinjam, tanggal_kembali) "
                 +
@@ -212,7 +221,8 @@ public class DatabaseService {
         }
     }
     // ========== LOGIN ==========
-
+    // EPIC 1 - Task 1 (Silvi) : Login berbasis DB (dicoba dulu sebelum fallback ke akun hardcoded di
+    // LoginRentalKendaraan.main()). 
     public static User login(String username, String password) {
         String sql = "SELECT * FROM users WHERE username=? AND password=?";
 

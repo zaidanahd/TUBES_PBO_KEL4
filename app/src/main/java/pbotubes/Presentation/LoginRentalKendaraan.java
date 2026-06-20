@@ -4,6 +4,8 @@ import pbotubes.Service.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+//Main class
+//EPIC 1 (Silvi) : Mencakup User Story 1, Otentikasi (Login) berbasis role, termasuk batas maksimal 3 kali percobaan login.
 public class LoginRentalKendaraan {
     public static ArrayList<Kendaraan> daftarKendaraan = new ArrayList<>();
     public static ArrayList<Pelanggan> daftarPelanggan = new ArrayList<>();
@@ -28,6 +30,8 @@ public class LoginRentalKendaraan {
                 { "owner", "123", "OWNER" }
         };
 
+        // EPIC 1 - Task 1 (Silvi) : User Story 1, Login dengan username & password, maksimal 3 kali percobaan.
+        // Jika cocok ,  arahkan ke menu sesuai role (Admin/Staff/Owner) via Polymorphism.
         int percobaan = 0;
         boolean login = false;
 

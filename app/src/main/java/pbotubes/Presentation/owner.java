@@ -4,6 +4,8 @@ import pbotubes.Model.*;
 
 import java.util.Scanner;
 
+//Dashboard & menu untuk role OWNER.
+// EPIC 5 (Haruka) : Mencakup User Story 5,  Laporan Riwayat & Pendapatan.
 
 public class owner extends User {
 
@@ -11,6 +13,7 @@ public class owner extends User {
         super(username);
     }
 
+    // EPIC 1 - Task 2 (Silvi) : Override menu() agar Owner hanya melihat menu Laporan Pendapatan (Epic 5).
     @Override
     public void menu() {
         Scanner input = new Scanner(System.in);
@@ -43,6 +46,7 @@ public class owner extends User {
         } while (pilihan != 0);
     }
 
+    // EPIC 5 - Task 1 (Haruka) : User Story 1 , Owner melihat seluruh riwayat transaksi, beserta Total Pendapatan.
     public void lihatLaporan(Scanner input) {
         System.out.println("=======================================================================================");
         System.out.printf("%55s\n", "LAPORAN RIWAYAT & PENDAPATAN");

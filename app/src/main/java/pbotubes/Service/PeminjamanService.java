@@ -5,7 +5,7 @@ import pbotubes.Model.Pelanggan;
 import pbotubes.Model.Transaksi;
 import pbotubes.Presentation.LoginRentalKendaraan; 
 
-// Task 4.3 - class service untuk proses peminjaman dan pengembalian
+// EPIC 4 - Task 4.3 (Alwi) - class service untuk proses peminjaman dan pengembalian
 public class PeminjamanService {
 
     // Overload: tanpa asuransi (backward compatible)

@@ -5,6 +5,12 @@ import pbotubes.Service.*;
 
 import java.util.Scanner;
 
+
+//Dashboard & menu untuk role STAFF.
+//Gabungan dua Epic:
+//EPIC 3 (Zaidan) : Manajemen Pelanggan (Daftar & Cari Pelanggan)
+//EPIC 4 (Alwi)   : Transaksi Peminjaman & Pengembalian (+ Lihat Kendaraan Tersedia)
+ 
 public class staff extends User {
 
     private PeminjamanService peminjamanService;
@@ -13,6 +19,9 @@ public class staff extends User {
         super(username);
         this.peminjamanService = new PeminjamanService();
     }
+
+    //EPIC 1 - Task 2 (Silvi) :  Override menu() agar Staff hanya melihat menu Manajemen Pelanggan & Transaksi.
+    // (gabungan Epic 3 & Epic 4), sesuai acceptance criteria pembatasan akses per role.
 
     @Override
     public void menu() {
@@ -62,6 +71,7 @@ public class staff extends User {
         } while (pilihan != 0);
     }
 
+    //EPIC 3 - Task 1 (Zaidan) : User Story 1, Staff mendaftarkan pelanggan baru (Nomor KTP & Nama).
     private void menuDaftarPelanggan(Scanner input) {
         System.out.println("========================================");
         System.out.println("       MENU PENDAFTARAN PELANGGAN       ");
@@ -100,6 +110,7 @@ public class staff extends User {
         System.out.println("\n[SUKSES] Pelanggan " + nama + " (KTP: " + ktp + ") berhasil didaftarkan.");
     }
 
+    //EPIC 3 - Task 2 (Zaidan) :User Story 2, Staff mencari data pelanggan berdasarkan Nomor KTP.
     private void menuCariPelanggan(Scanner input) {
         System.out.println("========================================");
         System.out.println("         MENU PENCARIAN PELANGGAN       ");
@@ -130,6 +141,7 @@ public class staff extends User {
         }
     }
 
+    // EPIC 4 - Task 1 (Alwi) : User Story 1, Staff melihat daftar kendaraan berstatus "Tersedia" saja. 
     private void menuLihatKendaraanTersedia(Scanner input) {
         System.out.println("=========================================================================");
         System.out.println("                     DAFTAR KENDARAAN TERSEDIA                           ");
@@ -159,6 +171,8 @@ public class staff extends User {
         input.nextLine();
     }
 
+    // EPIC 4 - Task 2 (Alwi) : User Story 2, Staff mencatat transaksi peminjaman (Validasi KTP, ID Transaksi dibuat otomatis, Status kendaraan).
+    // - Mendukung opsi Asuransi (case tambahan Kelompok 4).
     private void menuProsesSewa(Scanner input) {
         System.out.println("========================================");
         System.out.println("          MENU PROSES SEWA            ");
@@ -233,6 +247,9 @@ public class staff extends User {
         input.nextLine();
     }
 
+    // EPIC 4 - Task 3 (Alwi) : User Story 3, Staff memproses pengembalian kendaraan (Hitung biaya dasar, Denda telat).
+    // Case tambahan Kelompok 4: input kondisi kerusakan 
+    // Tampilkan struk tagihan akhir & ubah status kendaraan 
     private void menuPengembalian(Scanner input) {
         System.out.println("\n========================================");
         System.out.println("      MENU PENGEMBALIAN KENDARAAN       ");
